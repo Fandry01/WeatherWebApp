@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/bootstrap")
+    
+
+</head>
+<div style="margin-top:50px;" class="row">
+    <div class="col-md-12">
+        <div class="col-md-6 nopadding">
+            <div class="form-group">
+                <div class="col-md-4">
+                    <label for="Lat">Lat<mandatory class="MandatoryColor">*</mandatory></label>
+                </div>
+                <div class="col-md-8">
+                    <div class="">
+                        <input id="lat" name="lat" type="text" maxlength="100" style="text-transform: capitalize;" class="form-control" placeholder="Lat" tabindex="1" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-4">
+                    <label for="Lon">Lon<mandatory class="MandatoryColor">*</mandatory></label>
+                </div>
+                <div class="col-md-8">
+                    <input id="lon" name="lon" type="text" maxlength="100" style="text-transform: capitalize;" class="form-control" placeholder="Lon" tabindex="2" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="button" class="pull-right btn btn-primary" style="margin-top:20px; margin-right:80px;" value="Search" onclick="Submitftn()" />
+
+<div id="temp" style="display:none;margin-top:100px; text-align:center; margin-right:80px;">Het temperatuur is: <span id="tempval"></span></div>
+<div id="Error" style="display:none;margin-top:100px; text-align:center; margin-right:80px;"> er is een fout in de locatie. bekijk het aub opnieuw</div>
+
+<script type="text/javascript">
+    function Submitftn() {
+        
+        var lat = $('#lat').val();
+        var lon = $('#lon').val();
+        var baseUri = "http://localhost/Webapi/api/Values?Lat=" + lat + "&Lon="+lon;
+        $.ajax({
+            type: "Get",
+            url: baseUri,
+           
+            contentType: 'application/json; charset=utf-8',
+         
+            success: function (data) {
+                if (data == "Error") {
+                    $('#temp').hide();
+                    $('#Error').show();
+                }
+                else {
+                    $('#Error').hide();
+                    $('#temp').show();
+                    $('#tempval').text(data);
+                }
+                
+            },
+            error: function () { }
+
+        });
+
+
+
+    }
+
+
+</script>
